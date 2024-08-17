@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+        .card-header {
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content:center; align-items: center;">
+        <h1>Invoice</h1>
+        <h4>order-ID:{{order.id}}</h4>
+    </div>
+    <div class="card">
+       
+        <div class="card-header">
+            Order details <br><small>Your order items</small>
+        </div>
+        <div class="card-body">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                       
+                        <th>Product</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                       
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.variant.color }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.subtotal }}</td>
+                       
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div >
+                <div>Shipping: +  {{ order.shipping_charge }}</div>
+                <div>Coupon: -  {{ order.coupon.discount_price|default:0 }}</div>
+                <div>Total:  {{ order.total_price }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Shipping Address
+        </div>
+        <div class="card-body">
+            <address>
+                {{ order.address.fullname }}<br>
+                {{ order.address.apartment }} {{ order.address.street }}<br>
+                {{ order.address.city }}<br>
+                {{ order.address.district }}<br>
+                {{ order.address.state }}<br>
+                {{ order.address.country }}<br>
+                {{ order.address.zip_code }}<br>
+                {{ order.address.phone }}<br>
+            </address>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Payment Mode
+        </div>
+        <div class="card-body">
+            {{ order.payment_method }}
+        </div>
+    </div>
+</body>
+</html>
